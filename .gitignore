@@ -1,0 +1,78 @@
+# ====================
+# 1. Keil MDK-ARM 相关
+# ====================
+
+# 【必须忽略】用户个性化设置（包含电脑用户名，极易冲突）
+*.uvguix.*
+*.uvoptx
+*.uvopt
+*.uvgui
+
+# 【必须忽略】编译中间文件（.o, .d）和临时文件
+*.o
+*.d
+*.lst
+*.crf
+*.lnp
+*.axf
+*.elf
+*.bin
+*.hex
+*.htm
+*.dep
+*.iex
+*.sct  # 分散加载文件（除非你手动修改过，否则由CubeMX生成，不用提交）
+
+# 【建议忽略】Keil 生成的输出文件夹（视个人项目名称而定）
+Objects/
+Listings/
+MDK-ARM/P01_fight_hal/   # 这个就是你 status 里看到的那个文件夹，里面多半是编译产物
+
+# 【建议提交】Keil 的项目结构文件（如果不忽略，默认会被 Git 追踪）
+# 注意：.uvprojx 是项目结构，建议提交，所以不要写规则忽略它！
+# 注意：DebugConfig/ 包含调试器配置（如 ST-Link/J-Link 设置），建议提交以便团队统一
+
+
+# ====================
+# 2. VS Code 相关
+# ====================
+
+# 【忽略整个 .vscode 目录，但强制提交几个关键配置文件】
+.vscode/
+# 但保留以下关键配置文件，便于团队共享调试和编译设置
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
+!.vscode/settings.json
+
+# VS Code 的本地索引和缓存（体积大，必须忽略）
+.vscode/.browse.c_cpp.db*
+.vscode/ipch
+*.code-workspace
+
+
+# ====================
+# 3. STM32CubeMX 相关
+# ====================
+
+# 【必须提交】.ioc 文件是项目的“灵魂”，千万不要忽略！！！
+# 以下是需要忽略的 CubeMX 临时文件
+SI/                # CubeMX 的浏览器缓存
+project/           # CubeMX 生成的临时项目备份
+*.ioc.bak          # CubeMX 自动备份文件
+
+
+# ====================
+# 4. 通用编译/系统文件
+# ====================
+
+# 日志文件
+*.log
+JLinkLog.txt
+
+# Windows 系统文件
+Thumbs.db
+desktop.ini
+
+# Mac 系统文件
+.DS_Store
