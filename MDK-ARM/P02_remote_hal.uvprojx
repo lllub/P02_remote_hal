@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;./common;./freeRTOS;./freeRTOS/include;./freeRTOS/portable;./Application</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;./common;./freeRTOS;./freeRTOS/include;./freeRTOS/portable;./Application;interface</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -799,6 +799,21 @@
               <FileName>App_freeRTOS_Task.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Application\App_freeRTOS_Task.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>interface</GroupName>
+          <Files>
+            <File>
+              <FileName>Int_TP4336.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\interface\Int_TP4336.c</FilePath>
+            </File>
+            <File>
+              <FileName>Int_TP4336.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\interface\Int_TP4336.h</FilePath>
             </File>
           </Files>
         </Group>
