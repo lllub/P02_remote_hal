@@ -1,18 +1,11 @@
 #include "App_freeRTOS_Task.h"
 
-void task1(void *arg);
+void power_task(void *args);
 // 最小推荐填写128 => 128个32位字节 => 128*4=512字节
-#define TASK1_STACK_SIZE 128
+#define POWER_TASK_STACK_SIZE 128
 // 任务优先级 => 数字越小 优先级越小 => 最大4 => 不推荐使用最小优先级0(系统空闲任务)
-#define TASK1_PRIORITY 1
-TaskHandle_t task1_handle;
-
-void task2(void *arg);
-// 最小推荐填写128 => 128个32位字节 => 128*4=512字节
-#define TASK2_STACK_SIZE 128
-// 任务优先级 => 数字越小 优先级越小 => 最大4 => 不推荐使用最小优先级0(系统空闲任务)
-#define TASK2_PRIORITY 2
-TaskHandle_t task2_handle;
+#define POWER_TASK_PRIORITY 4
+TaskHandle_t power_task_handle;
 
 /**
  * @brief  启动freeRTOS操作系统
@@ -29,31 +22,25 @@ void App_freeRTOS_start(void)
      * @param  uxPriority: 任务优先级
      * @param  pxCreatedTask: 任务句柄
      */
-    xTaskCreate(task1, "task1", TASK1_STACK_SIZE, NULL, TASK1_PRIORITY, &task1_handle);
-    xTaskCreate(task2, "task2", TASK2_STACK_SIZE, NULL, TASK2_PRIORITY, &task2_handle);
+    
+    // 创建电源任务
+    xTaskCreate(power_task, "power_task", POWER_TASK_STACK_SIZE, NULL, POWER_TASK_PRIORITY, &power_task_handle);
+
     // 2. 启动调度器
     vTaskStartScheduler();
 }
 
-
-void task1(void *arg)
+/**
+ * @brief  电源任务
+ */
+void power_task(void *args)
 {
-    // task1的任务启动后 不断执行的内容
+    TickType_t xLastWakeTime = xTaskGetTickCount();
     while (1)
     {
-        debug_printf("task1 is running...\n");
-        // 延时1秒 => 释放CPU占用
-        vTaskDelay(1000); 
-    }
-}
-
-void task2(void *arg)
-{
-    // task2的任务启动后 不断执行的内容
-    while (1)
-    {
-        debug_printf("task2 is running...\n");
-        // 延时1秒 => 释放CPU占用
-        vTaskDelay(900); 
+        // 电源管理任务循环 每10秒执行一次 => 启动电源 避免自动关机
+        vTaskDelayUntil(&xLastWakeTime, 10000);     //较vTaskDelay()更精确,有一个基准时间
+        // 启动电源
+        Int_TP4336_init();
     }
 }
