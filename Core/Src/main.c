@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "App_freeRTOS_Task.h"
+#include "Int_SI24R1.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,13 +90,16 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
   // 实现最初的日志打印
   // HAL_UART_Transmit(&huart2, (uint8_t *)"Hello World!\n", 13, 1000);
 
   // 使用C语言标准的日志输出打印printf
-  debug_printf("Hello World!\n");
+  debug_printf("Hello remote!\n");
+
+  Int_SI24R1_Init();
 
   //4 启动freeRTOS（启动调度器） => 后续代码不再执行
   App_freeRTOS_start();
