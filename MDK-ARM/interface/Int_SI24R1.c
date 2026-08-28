@@ -172,6 +172,7 @@ uint8_t Int_SI24R1_TxPacket(uint8_t *txbuf)
 	while (((state & TX_DS) == 0) && ((state & MAX_RT) == 0))		// 判断发送是否完成 => 发送完成标志位TX_DS或MAX_RT中任意一个为1
 	{
 		state = Int_SI24R1_Read_Reg(STATUS);  
+		vTaskDelay(1);
 	}
 		   
 	Int_SI24R1_Write_Reg(SI24R1_WRITE_REG + STATUS, state); 		// 清除TX_DS或MAX_RT中断标志

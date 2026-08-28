@@ -21,6 +21,15 @@ TaskHandle_t com_task_handle;
 #define COM_TASK_PERIOD 6
 
 
+// 按键任务
+void key_task(void *args);
+#define KEY_TASK_STACK_SIZE 128
+#define KEY_TASK_PRIORITY 2
+TaskHandle_t key_task_handle;
+// 任务周期
+#define KEY_TASK_PERIOD 20
+
+
 /**
  * @brief  启动freeRTOS操作系统
  */
@@ -41,7 +50,10 @@ void App_freeRTOS_start(void)
     xTaskCreate(power_task, "power_task", POWER_TASK_STACK_SIZE, NULL, POWER_TASK_PRIORITY, &power_task_handle);
 
     // 2.创建通讯任务
+    xTaskCreate(com_task, "com_task", COM_TASK_STACK_SIZE, NULL, COM_TASK_PRIORITY, &com_task_handle);
 
+    // 3.创建按键任务
+    xTaskCreate(key_task, "key_task", KEY_TASK_STACK_SIZE, NULL, KEY_TASK_PRIORITY, &key_task_handle);
 
     // 启动调度器
     vTaskStartScheduler();
@@ -60,6 +72,26 @@ void power_task(void *args)
         vTaskDelayUntil(&xLastWakeTime, POWER_TASK_PERIOD);     //较vTaskDelay()更精确,有一个基准时间
         // 启动电源
         Int_TP4336_init();
+    }
+}
+
+/**
+ * @brief  按键任务
+ */
+void key_task(void *args)
+{
+    // 获取当前的基准时间
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    while (1)
+    {
+        Key_type key = Int_key_get();
+        if (key != KEY_NONE)
+        {
+            debug_printf("key: %d\r\n", key);
+        }
+        
+        // 20ms执行一次
+        vTaskDelayUntil(&xLastWakeTime, KEY_TASK_PERIOD);
     }
 }
 
