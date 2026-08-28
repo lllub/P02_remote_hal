@@ -5,6 +5,7 @@
 #include "task.h"
 #include "Com_debug.h"
 #include "Int_TP4336.h"
+#include "Int_SI24R1.h"
 
 /**
  * @brief  启动freeRTOS操作系统
