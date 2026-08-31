@@ -15,6 +15,8 @@ typedef enum
     KEY_RIGHT,
     KEY_LEFT_X,
     KEY_RIGHT_X,
+    KEY_RIGHT_X_LONG,
+    
 }Key_type;
 
 
