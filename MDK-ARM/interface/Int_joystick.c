@@ -11,6 +11,7 @@ void Int_joystick_init(void)
 {
     // 直接使用HAL库函数开启ADC
     // 16位数据地址值 其实是32位 32位数据地址值也是32位
+    // 32单片机 使用的ADC转换为12位精度 范围0-4095
     HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_buffer, 4);
 }
 
