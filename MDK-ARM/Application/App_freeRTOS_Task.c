@@ -2,6 +2,10 @@
 
 // STM32F103C8T6 => SRAM 20K => 分配12K给操作系统
 
+// 摇杆数据结构体
+Joystick_Struct joystick = {0, 0, 0, 0};
+
+
 // 电源管理任务
 void power_task(void *args);
 // 最小推荐填写128 => 128个32位字节 => 128*4=512字节
@@ -30,6 +34,15 @@ TaskHandle_t key_task_handle;
 #define KEY_TASK_PERIOD 20
 
 
+// 摇杆任务
+void joystick_task(void *args);
+#define JOYSTICK_TASK_STACK_SIZE 128
+#define JOYSTICK_TASK_PRIORITY 2
+TaskHandle_t joystick_task_handle;
+//任务周期
+#define JOYSTICK_TASK_PERIOD 20
+
+
 /**
  * @brief  启动freeRTOS操作系统
  */
@@ -55,6 +68,9 @@ void App_freeRTOS_start(void)
     // 3.创建按键任务
     xTaskCreate(key_task, "key_task", KEY_TASK_STACK_SIZE, NULL, KEY_TASK_PRIORITY, &key_task_handle);
 
+    // 4.创建摇杆任务
+    xTaskCreate(joystick_task, "joystick_task", JOYSTICK_TASK_STACK_SIZE, NULL, JOYSTICK_TASK_PRIORITY, &joystick_task_handle);
+
     // 启动调度器
     vTaskStartScheduler();
 }
@@ -72,6 +88,27 @@ void power_task(void *args)
         vTaskDelayUntil(&xLastWakeTime, POWER_TASK_PERIOD);     //较vTaskDelay()更精确,有一个基准时间
         // 启动电源
         Int_TP4336_init();
+    }
+}
+
+/**
+ * @brief  摇杆任务
+ */
+void joystick_task(void *args)
+{
+    // 获取当前的基准时间
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    while (1)
+    {
+        // 初始化遥杆ADC
+        Int_joystick_init();
+        // 获取遥杆数据 -> 获取摇杆监控的ADC值
+        Int_joystick_get(&joystick);
+        
+        debug_printf("thr = %d, yaw = %d, pit = %d, rol = %d\n", joystick.thr, joystick.yaw, joystick.pit, joystick.rol);
+
+        // 20ms执行一次
+        vTaskDelayUntil(&xLastWakeTime, JOYSTICK_TASK_PERIOD);
     }
 }
 
