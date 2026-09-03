@@ -2,10 +2,6 @@
 
 // STM32F103C8T6 => SRAM 20K => 分配12K给操作系统
 
-// 摇杆数据结构体
-Joystick_Struct joystick = {0, 0, 0, 0};
-
-
 // 电源管理任务
 void power_task(void *args);
 // 最小推荐填写128 => 128个32位字节 => 128*4=512字节
@@ -98,15 +94,13 @@ void joystick_task(void *args)
 {
     // 获取当前的基准时间
     TickType_t xLastWakeTime = xTaskGetTickCount();
+    // 初始化遥杆ADC
+    Int_joystick_init();
     while (1)
     {
-        // 初始化遥杆ADC
-        Int_joystick_init();
-        // 获取遥杆数据 -> 获取摇杆监控的ADC值
-        Int_joystick_get(&joystick);
+        // 统一处理方式 => 应用层处理
+        App_process_joystick_data();
         
-        debug_printf("thr = %d, yaw = %d, pit = %d, rol = %d\n", joystick.thr, joystick.yaw, joystick.pit, joystick.rol);
-
         // 20ms执行一次
         vTaskDelayUntil(&xLastWakeTime, JOYSTICK_TASK_PERIOD);
     }
@@ -121,11 +115,8 @@ void key_task(void *args)
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while (1)
     {
-        Key_type key = Int_key_get();
-        if (key != KEY_NONE)
-        {
-            debug_printf("key: %d\r\n", key);
-        }
+        // 统一处理方式 => 应用层处理
+        App_process_key_data();
         
         // 20ms执行一次
         vTaskDelayUntil(&xLastWakeTime, KEY_TASK_PERIOD);
