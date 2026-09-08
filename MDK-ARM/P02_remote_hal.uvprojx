@@ -1162,6 +1162,16 @@
               <FileType>5</FileType>
               <FilePath>.\Application\App_process_data.h</FilePath>
             </File>
+            <File>
+              <FileName>App_transmit_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Application\App_transmit_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>App_transmit_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Application\App_transmit_data.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

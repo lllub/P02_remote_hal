@@ -47,6 +47,12 @@ void App_calibrate_joystick(void)
 
 
 /**
+ * @brief 如果freeRTOS两个任务优先级相等 => 两个任务会交替运行
+ * 
+ */
+
+
+/**
  * @brief 处理按键数据 => 读取按键状态 进行对应记录
  * 
  */
@@ -97,6 +103,10 @@ void App_process_key_data(void)
  */
 void App_process_joystick_data(void)
 {
+    // 解决freeRTOS任务优先级相等的问题 => 任务切换问题
+    // 使用临界区解决
+    taskENTER_CRITICAL();
+
     // 1. 获取遥杆数据 -> 获取摇杆监控的ADC值
     Int_joystick_get(&joystick);
 
@@ -123,5 +133,7 @@ void App_process_joystick_data(void)
     joystick.pit = Com_limit(joystick.pit, 0, 1000);
     joystick.rol = Com_limit(joystick.rol, 0, 1000);
 
+    // 退出临界区
+    taskEXIT_CRITICAL();
     debug_printf(":%d, %d, %d, %d\n", joystick.thr, joystick.yaw, joystick.pit, joystick.rol);
 }

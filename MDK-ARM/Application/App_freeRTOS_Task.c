@@ -124,7 +124,7 @@ void key_task(void *args)
 }
 
 
-uint8_t com_buff[TX_PLOAD_WIDTH] = {0};
+// uint8_t com_buff[TX_PLOAD_WIDTH] = {0};
 /**
  * @brief  通讯任务
  */
@@ -134,7 +134,8 @@ void com_task(void *args)
     TickType_t xLastWakeTime = xTaskGetTickCount();
     while (1)
     {
-        // 调用SI24R1接口 发送数据
+        /*
+         // 调用SI24R1接口 发送数据
         // 1.进入TX模式
         Int_SI24R1_TX_Mode();
         // 2.发送数据
@@ -150,6 +151,10 @@ void com_task(void *args)
         Int_SI24R1_TxPacket(com_buff);
         // 3.恢复RX模式
         Int_SI24R1_RX_Mode();
+        */
+
+        // 将打包完成的数据发送到飞机
+        App_transmit_data();
         // 6ms执行一次
         vTaskDelayUntil(&xLastWakeTime, COM_TASK_PERIOD);
 

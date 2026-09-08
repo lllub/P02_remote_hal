@@ -16,8 +16,8 @@ typedef struct
     int16_t yaw; // 偏航
     int16_t pit; // 俯仰
     int16_t rol; // 横滚
-    uint8_t shutdown; // 关机
-    uint8_t fix_height; // 定高
+    uint8_t shutdown; // 关机   1：关机  0：不关机
+    uint8_t fix_height; // 定高  1：定高  0：不定高
 }Remote_Data;
 
 /**
