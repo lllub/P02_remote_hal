@@ -46,6 +46,8 @@ void App_transmit_data(void)
     transmit_buff[15] = (checksum >> 8) & 0xFF;
     transmit_buff[16] = checksum & 0xFF;
 
+    debug_printf(":%d, %d, %d, %d, %d, %d\n", remote_data.thr, remote_data.yaw, remote_data.pit, remote_data.rol, remote_data.shutdown, remote_data.fix_height);
+
     Int_SI24R1_TxPacket(transmit_buff);
 
     // 3. 切换回RX模式

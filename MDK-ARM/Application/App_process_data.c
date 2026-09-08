@@ -135,5 +135,12 @@ void App_process_joystick_data(void)
 
     // 退出临界区
     taskEXIT_CRITICAL();
-    debug_printf(":%d, %d, %d, %d\n", joystick.thr, joystick.yaw, joystick.pit, joystick.rol);
+
+    // 将处理完成的数据复=赋值给遥控数据
+    remote_data.thr = joystick.thr;
+    remote_data.yaw = joystick.yaw;
+    remote_data.pit = joystick.pit;
+    remote_data.rol = joystick.rol;
+
+    // debug_printf(":%d, %d, %d, %d\n", joystick.thr, joystick.yaw, joystick.pit, joystick.rol);
 }
